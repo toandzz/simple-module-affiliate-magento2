@@ -65,4 +65,9 @@ class Data extends AbstractHelper
         }
         return $code;
     }
+
+    public function deleteCookie($key){
+        unset($_COOKIE[$key]);
+        setcookie($key, null, -1, '/');
+    }
 }

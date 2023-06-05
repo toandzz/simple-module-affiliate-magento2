@@ -51,9 +51,10 @@ class CheckCode implements \Magento\Framework\Event\ObserverInterface
         if ($controller->getRequest()->getParam('remove')) {
             $this->_checkoutSession->getQuote()->setAffiliateCode('')->save();
             $key = $this->helperData->getUrlKey();
-            if(isset($_COOKIE[$key])){
-                unset($_COOKIE[$key]);
-                setcookie($key, null, -1, '/');
+            if(empty($this->_checkoutSession->getQuote()->getAffiliateCode())){
+                if(isset($_COOKIE[$key])){
+                    $this->helperData->deleteCookie($key);
+                }
             }
             $this->_messageManager->addSuccessMessage('You canceled the affiliate code.');
         }

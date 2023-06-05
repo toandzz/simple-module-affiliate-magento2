@@ -32,61 +32,60 @@ class AffiliateOrder implements \Magento\Framework\Event\ObserverInterface
         $history = $this->historyFactory->create();
         $account = $this->accountFactory->create();
 
-            $order = $observer->getData('order');
-            $subTotal = $order['subtotal'];
-            $commissionValue = $this->helperData->getCommissionValue();
-            $commissionType = $this->helperData->getCommissionType();
-            switch ($commissionType){
-                case 'fixed':
-                    $per = $commissionValue;
-                    break;
-                case 'percentage':
-                    $per = $subTotal / 100 * $commissionValue;
-                    break;
-                default:
-                    $per = 0;
-                }
-            if(isset($_COOKIE[$key])){
-                $newBalance = $account->load($_COOKIE[$key],'code')->getData('balance') + $per;
-                $addBalance = $account->load($_COOKIE[$key],'code')->addData([
-                    'balance' => $newBalance
-                ])->save();
-                $affiliateId = $account->load($_COOKIE[$key],'code')->getData('customer_id');
-                if($addBalance){
-                    $data = [
-                        'order_id' => $order['entity_id'],
-                        'order_increment_id' => $order['increment_id'],
-                        'customer_id' => $affiliateId,
-                        'is_admin_change' => 0,
-                        'amount' => $per,
-                        'status' => 1
-                    ];
-                    $this->helperEmail->sendEmail($per,$_COOKIE[$key]);
-                    $history->addData($data)->save();
-                }
-                unset($_COOKIE[$key]);
-                setcookie($key, null, -1, '/');
-
+        $order = $observer->getData('order');
+        $subTotal = $order['subtotal'];
+        $commissionValue = $this->helperData->getCommissionValue();
+        $commissionType = $this->helperData->getCommissionType();
+        switch ($commissionType){
+            case 'fixed':
+                $per = $commissionValue;
+                break;
+            case 'percentage':
+                $per = $subTotal / 100 * $commissionValue;
+                break;
+            default:
+                $per = 0;
+        }
+        if(isset($_COOKIE[$key])){
+            $newBalance = $account->load($_COOKIE[$key],'code')->getData('balance') + $per;
+            $addBalance = $account->load($_COOKIE[$key],'code')->addData([
+                'balance' => $newBalance
+            ])->save();
+            $affiliateId = $account->load($_COOKIE[$key],'code')->getData('customer_id');
+            if($addBalance){
+                $data = [
+                    'order_id' => $order['entity_id'],
+                    'order_increment_id' => $order['increment_id'],
+                    'customer_id' => $affiliateId,
+                    'is_admin_change' => 0,
+                    'amount' => $per,
+                    'status' => 1
+                ];
+                $this->helperEmail->sendEmail($per,$_COOKIE[$key]);
+                $history->addData($data)->save();
             }
+            $this->helperData->deleteCookie($key);
 
-            else if($affiliateCode && empty($_COOKIE[$key])){
-                $balance = $account->load($affiliateCode,'code')->getData('balance') + $per;
-                $addBalance = $account->load($affiliateCode,'code')->addData([
-                    'balance' => $balance
-                ])->save();
-                $affiliateId = $account->load($affiliateCode,'code')->getData('customer_id');
-                if($addBalance){
-                    $data = [
-                        'order_id' => $order['entity_id'],
-                        'order_increment_id' => $order['increment_id'],
-                        'customer_id' => $affiliateId,
-                        'is_admin_change' => 0,
-                        'amount' => $per,
-                        'status' => 1
-                    ];
-                    $history->addData($data)->save();
-                }
-                $this->helperEmail->sendEmail($per,$affiliateCode);
+        }
+
+        else if($affiliateCode && empty($_COOKIE[$key])){
+            $balance = $account->load($affiliateCode,'code')->getData('balance') + $per;
+            $addBalance = $account->load($affiliateCode,'code')->addData([
+                'balance' => $balance
+            ])->save();
+            $affiliateId = $account->load($affiliateCode,'code')->getData('customer_id');
+            if($addBalance){
+                $data = [
+                    'order_id' => $order['entity_id'],
+                    'order_increment_id' => $order['increment_id'],
+                    'customer_id' => $affiliateId,
+                    'is_admin_change' => 0,
+                    'amount' => $per,
+                    'status' => 1
+                ];
+                $history->addData($data)->save();
             }
+            $this->helperEmail->sendEmail($per,$affiliateCode);
+        }
     }
 }
