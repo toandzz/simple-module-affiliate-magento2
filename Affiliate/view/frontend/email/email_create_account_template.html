@@ -1,0 +1,16 @@
+{{template config_path="design/email/header_template"}}
+<h1>Welcome to become Affiliate</h1>
+<table>
+    <tr>
+        <th style="padding-left: 20px">Old Balance</th>
+        <th style="padding-left: 20px">New Balance</th>
+        <th style="padding-left: 20px">Change</th>
+    </tr>
+    <tr>
+        <td style="padding-left: 20px">{{trans "%oldBalance" oldBalance=$oldBalance}}</td>
+        <td style="padding-left: 20px">{{trans "%newBalance" newBalance=$newBalance}}</td>
+        <td style="padding-left: 20px">{{trans "%change" change=$change}}</td>
+    </tr>
+</table>
+{{template config_path="design/email/footer_template"}}
+<!--@subject {{trans "Create new affiliate account "}} @-->

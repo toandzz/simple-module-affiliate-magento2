@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="mageplaza" translate="label" sortOrder="10">
+            <label>Mageplaza Extensions</label>
+        </tab>
+        <section id="affiliate" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Affiliate</label>
+            <tab>mageplaza</tab>
+            <resource>Mageplaza_Affiliate::mageplaza</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General Configuration</label>
+                <field id="enable_affiliate" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable Affiliate</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="select_register_static_block" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Select Register Static Block</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="code_length" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Code length</label>
+                    <validate>validate-no-empty validate-number validate-not-negative-number</validate>
+                    <comment>Length of code</comment>
+                </field>
+                <field id="url_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>URL Key</label>
+                    <comment>value name get code on URL ( default: key)</comment>
+                </field>
+            </group>
+            <group id="affiliate_rule" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Affiliate Rule</label>
+                <field id="apply_discount_to_customer" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Apply Discount to Customer</label>
+                    <source_model>Mageplaza\Affiliate\Model\Config\Source\SelectApply</source_model>
+                    <comment>(No, Fixed Value, Percentage of order total)</comment>
+                </field>
+                <field id="discount_value" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Discount Value</label>
+                    <validate>validate-no-empty validate-number validate-not-negative-number</validate>
+                    <depends>
+                        <field id="affiliate/affiliate_rule/apply_discount_to_customer" separator="|">fixed|percentage</field>
+                    </depends>
+                </field>
+                <field id="commission_type" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Commission Type</label>
+                    <source_model>Mageplaza\Affiliate\Model\Config\Source\SelectCommissionType</source_model>
+                    <comment>(Fixed Value, Percentage of order total)</comment>
+                </field>
+                <field id="commission_value" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Commission Value</label>
+                <validate>validate-no-empty validate-number validate-not-negative-number</validate>
+                <comment>(numeric text)</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

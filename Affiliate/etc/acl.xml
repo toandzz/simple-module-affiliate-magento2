@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Mageplaza_Affiliate::mageplaza" title="Mageplaza Affiliate" sortOrder="51">
+                    <resource id="Mageplaza_Affiliate::affiliate" title="Affiliate" sortOrder="50">
+                        <resource id="Mageplaza_Affiliate::manageaccount" title="Manage Account" sortOrder="97">
+                            <resource id="Mageplaza_Affiliate::manageaccount_create" title="Create Account" sortOrder="50"/>
+                            <resource id="Mageplaza_Affiliate::manageaccount_delete" title="Delete Account" sortOrder="50"/>
+                            <resource id="Mageplaza_Affiliate::manageaccount_edit" title="Edit Account" sortOrder="50"/>
+                            <resource id="Mageplaza_Affiliate::manageaccount_index" title="View Account" sortOrder="50"/>
+                            <resource id="Mageplaza_Affiliate::manageaccount_massactive" title="Active Account" sortOrder="50"/>
+                            <resource id="Mageplaza_Affiliate::manageaccount_massinactive" title="In Active Account" sortOrder="50"/>
+                            <resource id="Mageplaza_Affiliate::manageaccount_massdelete" title="Mass Delete Account" sortOrder="50"/>
+                            <resource id="Mageplaza_Affiliate::manageaccount_save" title="Save Account" sortOrder="50"/>
+                        </resource>
+                        <resource id="Mageplaza_Affiliate::history" title="History" sortOrder="98"/>
+                        <resource id="Mageplaza_Affiliate::configuration" title="Configuration" sortOrder="99" />
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Mageplaza_Affiliate::affiliate_config" title="Affiliate Configuration"/>
+                        </resource>
+                    </resource>
+                </resource>
+
+            </resource>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,30 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="affiliate_account_listing_data_source" xsi:type="string">Mageplaza\Affiliate\Model\ResourceModel\Account\Grid\Collection</item>
+            </argument>
+        </arguments>
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="affiliate_history_listing_data_source" xsi:type="string">HistoryVirtualType</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Mageplaza\Affiliate\Model\ResourceModel\Account\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">affiliate_account</argument>
+            <argument name="resourceModel" xsi:type="string">Mageplaza\Affiliate\Model\ResourceModel\Account</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="HistoryVirtualType" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">affiliate_history</argument>
+            <argument name="resourceModel" xsi:type="string">Mageplaza\Affiliate\Model\ResourceModel\History</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Checkout\Block\Cart\Coupon">
+        <plugin name="affiliate_code" type="Mageplaza\Affiliate\Plugin\AffiliateCode"/>
+    </type>
+</config>

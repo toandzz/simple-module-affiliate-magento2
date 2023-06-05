@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Mageplaza_Affiliate::mageplaza" title="Mageplaza" module="Mageplaza_Affiliate" sortOrder="10" resource="Mageplaza_Affiliate::mageplaza"/>
+        <add id="Mageplaza_Affiliate::affiliate" title="Affiliate" translate="title" module="Mageplaza_Affiliate" sortOrder="40" parent="Mageplaza_Affiliate::mageplaza" resource="Mageplaza_Affiliate::affiliate"/>
+        <add id="Mageplaza_Affiliate::manageaccount" title="Manage Account" module="Mageplaza_Affiliate" sortOrder="40" action="affiliate/account/index" parent="Mageplaza_Affiliate::affiliate" resource="Mageplaza_Affiliate::manageaccount" dependsOnConfig="affiliate/general/enable_affiliate"/>
+        <add id="Mageplaza_Affiliate::history" title="History" module="Mageplaza_Affiliate" sortOrder="41" action="affiliate/history/index" parent="Mageplaza_Affiliate::affiliate" resource="Mageplaza_Affiliate::history" dependsOnConfig="affiliate/general/enable_affiliate"/>
+        <add id="Mageplaza_Affiliate::configuration" title="Configuration" module="Mageplaza_Affiliate" sortOrder="50" action="adminhtml/system_config/edit/section/affiliate" parent="Mageplaza_Affiliate::affiliate" resource="Mageplaza_Affiliate::configuration"/>
+    </menu>
+</config>

@@ -1,0 +1,102 @@
+<?php
+/**
+ * @var \Mageplaza\Affiliate\Block\MyAffiliate $block
+ */
+    $history = $block->getHistory();
+    $balance = $block->getBalance();
+    $code = $block->getCode();
+    $referLink = $block->referLink();
+    $check = $block->getCustomer();
+    $staticBlock = $block->getStaticBlock();
+
+?>
+<?php if($check) { ?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .left {
+            width: 50%;
+            float: left;
+        }
+        .right {
+            width: 50%;
+            float: right;
+            text-align: right;
+        }
+        .page-title > span {
+            color: #5e5e5e;
+        }
+    </style>
+</head>
+<body>
+    <div class="block block-dashboard-info">
+        <h2 style="color: #999999; margin-bottom: 10px;">Affiliate Information</h2>
+        <hr style="margin-top: 0;">
+        <div class="block-content">
+            <div class="left">
+                <b style="font-size: 20px">Balance</b>
+                <div style="color: #999999; margin-top: 15px;"><?= $balance ?></div>
+            </div>
+            <div class="right">
+                <b style="font-size: 20px;">Refer Link</b>
+                <div style="margin-top: 15px;">
+                    <form>
+                        <input id="refer-link" style="width: 250px;" type="text" value=<?= $referLink.$code ?> name="code">
+                        <button type="button" id="copy-button">Copy</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block block-dashboard-info">
+        <div class="block-title"><h1 style="margin-bottom: 5px; color: #999999; display: inline; margin-right: 20px;">History</h1></div>
+        <div class="table-wrapper orders-history">
+            <table class="data table table-order-items history" id="my-orders-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col "><?php echo (__('Order ID')) ?></th>
+                    <th scope="col" class="col "><?php echo (__('Order Increment ID')) ?></th>
+                    <th scope="col" class="col "><?php echo (__('is Admin Change')) ?></th>
+                    <th scope="col" class="col "><?php echo (__('Amount')) ?></th>
+                    <th scope="col" class="col "><?php echo (__('Date')) ?></th>
+                </tr>
+                </thead>
+                <body>
+                <body>
+                <?php foreach ($history as $key => $item): ?>
+                    <tr>
+                        <td><?= $item['order_id']?></td>
+                        <td><?= $item['order_increment_id']?></td>
+                        <td><?= ($item['is_admin_change'] == 1) ? 'Admin' : 'Created from order '.'#'.$item['order_increment_id']?></td>
+                        <td><?= $block->formatCurrency($item['amount'])?></td>
+                        <td><?= $block->formatDateTime($item['create_at'])?></td>
+                    </tr>
+                <?php endforeach;?>
+                </body>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+<?php }else{?>
+    <div><b style="font-size: 20px"><?= $staticBlock?></b></div>
+    <div>
+        <form action="<?= $block->getFormAction() ?>" method="post">
+            <button name="register">Register</button>
+        </form>
+    </div>
+<?php }?>
+<script type="text/javascript">
+    document.getElementById('copy-button').addEventListener('click', function() {
+        var input = document.getElementById('refer-link');
+        input.select();
+        document.execCommand('copy');
+        alert('Copied refer link to clipboard!');
+    });
+</script>
