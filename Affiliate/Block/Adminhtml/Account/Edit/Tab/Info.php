@@ -29,7 +29,7 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
     {
         $model = $this->_coreRegistry->registry('account');
         $form = $this->_formFactory->create();
-        $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Account Add')]);
+        $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Account Information')]);
 
         if($model->getID()){
             $customer = $this->customerEntityFactory->create();
@@ -92,7 +92,8 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'text', [
                     'name'     => 'customer_id',
                     'label'    => __('Customer ID'),
-                    'required' => true
+                    'required' => true,
+                    'class' => 'validate-number'
                 ]
             );
         }
