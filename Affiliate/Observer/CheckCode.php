@@ -9,6 +9,7 @@ class CheckCode implements \Magento\Framework\Event\ObserverInterface
     protected $actionFlag;
     protected $_checkoutSession;
     protected $helperData;
+    protected $customerSession;
 
     public function __construct(
         \Mageplaza\Affiliate\Model\AccountFactory $accountFactory,
@@ -16,7 +17,8 @@ class CheckCode implements \Magento\Framework\Event\ObserverInterface
         \Magento\Framework\App\Response\RedirectInterface $redirect,
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \Mageplaza\Affiliate\Helper\Data $helperData
+        \Mageplaza\Affiliate\Helper\Data $helperData,
+        \Magento\Customer\Model\Session $customerSession
     )
     {
         $this->accountFactory = $accountFactory;
@@ -25,6 +27,7 @@ class CheckCode implements \Magento\Framework\Event\ObserverInterface
         $this->actionFlag = $actionFlag;
         $this->_checkoutSession = $checkoutSession;
         $this->helperData = $helperData;
+        $this->customerSession = $customerSession;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -35,7 +38,9 @@ class CheckCode implements \Magento\Framework\Event\ObserverInterface
         if($code){
             $account = $this->accountFactory->create();
             $accountId = $account->load($code,'code')->getId();
-            if($accountId){
+            $customerId = $this->customerSession->getCustomerId();
+            $affiliateCode = $account->load($customerId, 'customer_id')->getData('code');
+            if($accountId && $code != $affiliateCode){
                 foreach($account->getCollection()->getData() as $item){
                     if($item['code'] == $code){
                         $quote = $this->_checkoutSession->getQuote();
@@ -44,9 +49,11 @@ class CheckCode implements \Magento\Framework\Event\ObserverInterface
                         $this->_messageManager->addSuccessMessage('Gift code applied successfully');
                     }
                 }
-                $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $this->_redirect->redirect($controller->getResponse(),'checkout/cart');
+            }else{
+                $this->_messageManager->addErrorMessage('Gift code is not applicable to the affiliate that created it');
             }
+            $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+            $this->_redirect->redirect($controller->getResponse(),'checkout/cart');
         }
         if ($controller->getRequest()->getParam('remove')) {
             $this->_checkoutSession->getQuote()->setAffiliateCode('')->save();
